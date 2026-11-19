@@ -18,7 +18,7 @@ def check(name, cond):
 def raises(fn, *args):
     try:
         fn(*args)
-    except ValueError:
+    except (ValueError, SystemExit):
         return True
     return False
 
@@ -74,6 +74,21 @@ r = server.lookup_term("content-type")
 check("domain term resolves", r.get("source", "").startswith("RFC"))
 check(
     "unknown term minimal", server.lookup_term("FOO") == {"term": "FOO", "found": False}
+)
+
+# Transport selection
+check("stdio default", server.transport_config({}) == ("stdio", {}))
+check(
+    "http custom",
+    server.transport_config(
+        {"TRANSPORT": "streamable-http", "HOST": "127.0.0.1", "PORT": "9000"}
+    )
+    == ("streamable-http", {"host": "127.0.0.1", "port": 9000}),
+)
+check("bad transport rejected", raises(server.transport_config, {"TRANSPORT": "tcp"}))
+check(
+    "bad port rejected",
+    raises(server.transport_config, {"TRANSPORT": "streamable-http", "PORT": "x"}),
 )
 t = "Server MUST retry, see RFC 2119."
 check(

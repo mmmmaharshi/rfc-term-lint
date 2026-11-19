@@ -1,6 +1,6 @@
 """rfc-term-lint MCP server - minimal. Run: python server.py (stdio)"""
 
-import json, re
+import json, os, re
 from pathlib import Path
 from mcp.server.mcpserver import MCPServer
 
@@ -173,5 +173,23 @@ def suggest_fix(paragraph: str) -> dict:
     return suggest(paragraph)
 
 
+def transport_config(env) -> tuple:
+    transport = env.get("TRANSPORT", "stdio")
+    if transport == "stdio":
+        return (transport, {})
+    if transport == "streamable-http":
+        try:
+            port = int(env.get("PORT", "8000"))
+        except ValueError:
+            raise SystemExit("PORT must be a number")
+        return (transport, {"host": env.get("HOST", "0.0.0.0"), "port": port})
+    raise SystemExit(f"unknown TRANSPORT: {transport!r} (stdio|streamable-http)")
+
+
+def main() -> None:
+    transport, kwargs = transport_config(os.environ)
+    mcp.run(transport=transport, **kwargs)
+
+
 if __name__ == "__main__":
-    mcp.run()
+    main()

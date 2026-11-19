@@ -2,9 +2,28 @@
 
 Lints research-paper wording against BCP 14 (RFC 2119 + RFC 8174) keywords.
 
-## Run
+## Use the hosted server
 
-`uv sync && uv run server.py` (stdio). Or `pip install mcp` + any Python ≥3.10.
+No install. Point your MCP client at the public URL (streamable HTTP):
+
+```json
+{ "mcpServers": { "rfc-term-lint": { "url": "https://<host>/mcp" } } }
+```
+
+## Self-host with Docker
+
+```sh
+docker build -t rfc-term-lint .
+docker run -p 8000:8000 rfc-term-lint
+```
+
+`TRANSPORT=stdio` (default) keeps local stdio mode; `streamable-http` serves
+`POST /mcp` on `HOST`/`PORT` (defaults `0.0.0.0`/`8000`).
+
+## Local dev
+
+`uv sync && uv run server.py` (stdio). Roadmap: per-IP rate limits before any
+API keys (see `docs/adr/0001-hosted-mcp-distribution.md`).
 
 ## Tools
 
