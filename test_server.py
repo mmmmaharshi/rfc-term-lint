@@ -55,5 +55,13 @@ check("oversize rejected", raises(server.evaluate, "x" * (server.MAX_TEXT + 1)))
 # Keyword set and meanings stay in sync
 check("terms covered by meanings", set(server.TERMS) <= set(server.MEANINGS))
 
+# Both tools agree on the boilerplate rule
+t = "Server MUST retry, see RFC 2119."
+check(
+    "boilerplate rule agrees",
+    server.evaluate(t)["has_boilerplate"]
+    and not server.suggest(t)["needs_boilerplate"],
+)
+
 print(f"{passed} passed, {failed} failed")
 raise SystemExit(1 if failed else 0)

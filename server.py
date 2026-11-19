@@ -52,6 +52,10 @@ def _need_text(name: str, value) -> str:
     return value
 
 
+def _has_boilerplate(text: str) -> bool:
+    return "RFC 2119" in text or "BCP 14" in text
+
+
 def lookup_term(term: str) -> dict:
     """Look up a BCP14 keyword. term: e.g. MUST, SHOULD, MAY"""
     t = _need_text("term", term).strip().upper()
@@ -78,7 +82,7 @@ def evaluate(text: str) -> dict:
     return {
         "normative_hits": flags,
         "ambiguous_lowercase": vague,
-        "has_boilerplate": "RFC 2119" in text or "BCP 14" in text,
+        "has_boilerplate": _has_boilerplate(text),
     }
 
 
@@ -113,7 +117,7 @@ def suggest(paragraph: str) -> dict:
         )
     return {
         "fixes": fixes,
-        "needs_boilerplate": "BCP 14" not in paragraph
+        "needs_boilerplate": not _has_boilerplate(paragraph)
         and bool(KW_RE.search(paragraph)),
     }
 
