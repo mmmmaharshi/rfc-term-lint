@@ -55,7 +55,16 @@ check("oversize rejected", raises(server.evaluate, "x" * (server.MAX_TEXT + 1)))
 # Keyword set and meanings stay in sync
 check("terms covered by meanings", set(server.TERMS) <= set(server.MEANINGS))
 
-# Two-word phrases stay together
+# Terminology parser handles sections and misses
+import ingest_domain
+
+sample = "3. Terminology\n\n   Content-Type:  media type of the body\n\n4. Next\n"
+check(
+    "terminology parsed",
+    ingest_domain.parse_terminology(sample)
+    == [("Content-Type", "media type of the body")],
+)
+check("missing section empty", ingest_domain.parse_terminology("no sections") == [])
 fixes = server.suggest("you must not cache")["fixes"]
 check(
     "must not single fix",
