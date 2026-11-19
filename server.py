@@ -2,9 +2,9 @@
 
 import json, re
 from pathlib import Path
-from mcp.server.fastmcp import FastMCP
+from mcp.server.mcpserver import MCPServer
 
-mcp = FastMCP("rfc-term-lint")
+mcp = MCPServer("rfc-term-lint")
 TERMS = json.loads(Path(__file__).with_name("rfc_terms.json").read_text())["keywords"]
 # shortcut: meanings condensed from RFC2119 S1-5, upgrade when extractor parses sections
 MEANINGS = {
