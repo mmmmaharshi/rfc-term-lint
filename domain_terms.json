@@ -1,0 +1,56 @@
+{
+  "9110": [
+    {
+      "term": "Client request",
+      "def": "GET /hello.txt HTTP/1.1"
+    },
+    {
+      "term": "User-Agent",
+      "def": "curl/7.64.1"
+    },
+    {
+      "term": "Host",
+      "def": "www.example.com"
+    },
+    {
+      "term": "Accept-Language",
+      "def": "en, mi"
+    },
+    {
+      "term": "Server response",
+      "def": "HTTP/1.1 200 OK"
+    },
+    {
+      "term": "Date",
+      "def": "Mon, 27 Jul 2009 12:28:53 GMT"
+    },
+    {
+      "term": "Server",
+      "def": "Apache"
+    },
+    {
+      "term": "Last-Modified",
+      "def": "Wed, 22 Jul 2009 19:15:56 GMT"
+    },
+    {
+      "term": "ETag",
+      "def": "\"34aa387-d-1568eb00\""
+    },
+    {
+      "term": "Accept-Ranges",
+      "def": "bytes"
+    },
+    {
+      "term": "Content-Length",
+      "def": "51"
+    },
+    {
+      "term": "Vary",
+      "def": "Accept-Encoding"
+    },
+    {
+      "term": "Content-Type",
+      "def": "text/plain"
+    }
+  ]
+}
