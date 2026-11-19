@@ -4,7 +4,7 @@ Lints research-paper wording against BCP 14 (RFC 2119 + RFC 8174) keywords.
 
 ## Run
 
-`pip install mcp` then `python server.py` (stdio). Use Python 3.14 (mcp 2.x).
+`uv sync && uv run server.py` (stdio). Or `pip install mcp` + any Python ≥3.10.
 
 ## Tools
 

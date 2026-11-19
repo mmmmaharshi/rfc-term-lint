@@ -1,0 +1,7 @@
+[project]
+name = "rfc-term-lint"
+version = "0.1.0"
+description = "MCP server linting paper wording against BCP 14 (RFC 2119 + RFC 8174)"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["mcp>=2"]
