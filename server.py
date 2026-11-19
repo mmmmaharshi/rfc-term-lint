@@ -35,6 +35,22 @@ MEANINGS = {
 _UNDEFINED = set(TERMS) - set(MEANINGS)
 if _UNDEFINED:
     raise SystemExit(f"rfc-term-lint: keywords without meanings: {sorted(_UNDEFINED)}")
+
+
+def _load_domain() -> dict:
+    try:
+        data = json.loads(Path(__file__).with_name("domain_terms.json").read_text())
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {}
+    return {
+        d["term"].strip().upper(): (d.get("def", ""), rfc)
+        for rfc, items in data.items()
+        for d in items
+        if isinstance(d, dict) and d.get("term")
+    }
+
+
+DOMAIN = _load_domain()
 KW = sorted(TERMS, key=len, reverse=True)
 KW_RE = re.compile(r"\b(" + "|".join(map(re.escape, KW)) + r")\b")
 LOWER_RE = re.compile(
@@ -61,6 +77,9 @@ def lookup_term(term: str) -> dict:
     t = _need_text("term", term).strip().upper()
     if t in MEANINGS:
         return {"term": t, "meaning": MEANINGS[t], "source": "BCP14 (RFC2119+RFC8174)"}
+    if t in DOMAIN:
+        meaning, rfc = DOMAIN[t]
+        return {"term": t, "meaning": meaning, "source": f"RFC {rfc} Terminology"}
     return {"term": t, "found": False, "keywords": TERMS}
 
 
