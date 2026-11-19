@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>rfc-term-lint — RFC wording checker for research papers</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:44rem;margin:3rem auto;padding:0 1rem;line-height:1.6}
+pre{background:#f4f4f4;padding:1rem;overflow-x:auto}
+code{background:#f4f4f4;padding:.1rem .3rem}
+footer{margin-top:3rem;color:#666;font-size:.9rem}
+</style>
+</head>
+<body>
+<h1>rfc-term-lint</h1>
+<p>Lints research-paper wording against BCP&nbsp;14 (RFC&nbsp;2119 + RFC&nbsp;8174).
+Flags normative keywords, ambiguous lowercase usage, and suggests precise rewrites.</p>
+
+<h2>Use the hosted server</h2>
+<p>No install. Point your MCP client at the public URL:</p>
+<pre><code>{ "mcpServers": { "rfc-term-lint": { "url": "https://&lt;host&gt;/mcp" } } }</code></pre>
+
+<h2>Tools</h2>
+<ul>
+<li><code>search_rfc_term</code> — meaning of a MUST/SHOULD/MAY keyword</li>
+<li><code>evaluate_text</code> — flags normative hits + ambiguous lowercase</li>
+<li><code>suggest_fix</code> — rewrite suggestions for one paragraph</li>
+</ul>
+
+<h2>Self-host</h2>
+<pre><code>docker build -t rfc-term-lint .
+docker run -p 8000:8000 rfc-term-lint</code></pre>
+
+<footer>
+<a href="https://github.com/mmmmaharshi/rfc-term-lint">GitHub</a> · MIT licensed
+</footer>
+</body>
+</html>
