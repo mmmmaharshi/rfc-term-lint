@@ -55,7 +55,12 @@ check("oversize rejected", raises(server.evaluate, "x" * (server.MAX_TEXT + 1)))
 # Keyword set and meanings stay in sync
 check("terms covered by meanings", set(server.TERMS) <= set(server.MEANINGS))
 
-# Domain terms resolve through the lookup
+# Two-word phrases stay together
+fixes = server.suggest("you must not cache")["fixes"]
+check(
+    "must not single fix",
+    [f["to"] for f in fixes] == ["MUST NOT"],
+)
 r = server.lookup_term("content-type")
 check("domain term resolves", r.get("source", "").startswith("RFC"))
 t = "Server MUST retry, see RFC 2119."

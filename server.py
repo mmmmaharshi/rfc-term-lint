@@ -56,6 +56,7 @@ KW_RE = re.compile(r"\b(" + "|".join(map(re.escape, KW)) + r")\b")
 LOWER_RE = re.compile(
     r"(?<![A-Z])\b(must|should|may|shall|required|recommended|optional)\b(?![A-Z])"
 )
+COMPOUND_RE = re.compile(r"(?<![A-Z])\b(must not|should not|shall not)\b(?![A-Z])")
 # One call must fit in a single tool response; split larger papers first
 MAX_TEXT = 200_000
 
@@ -109,7 +110,20 @@ def suggest(paragraph: str) -> dict:
     """Suggest BCP14-precise rewrite for one paragraph."""
     paragraph = _need_text("paragraph", paragraph)
     fixes = []
+    taken = []
+    for m in COMPOUND_RE.finditer(paragraph):
+        taken.append((m.start(), m.end()))
+        fixes.append(
+            {
+                "at": m.start(),
+                "from": m.group(0),
+                "to": m.group(0).upper(),
+                "why": "normative intent -> UPPERCASE per BCP14, else reword to 'is expected to'",
+            }
+        )
     for m in LOWER_RE.finditer(paragraph):
+        if any(a <= m.start() < b for a, b in taken):
+            continue
         fixes.append(
             {
                 "at": m.start(),
