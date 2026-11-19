@@ -72,6 +72,9 @@ check(
 )
 r = server.lookup_term("content-type")
 check("domain term resolves", r.get("source", "").startswith("RFC"))
+check(
+    "unknown term minimal", server.lookup_term("FOO") == {"term": "FOO", "found": False}
+)
 t = "Server MUST retry, see RFC 2119."
 check(
     "boilerplate rule agrees",

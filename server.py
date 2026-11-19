@@ -81,7 +81,7 @@ def lookup_term(term: str) -> dict:
     if t in DOMAIN:
         meaning, rfc = DOMAIN[t]
         return {"term": t, "meaning": meaning, "source": f"RFC {rfc} Terminology"}
-    return {"term": t, "found": False, "keywords": TERMS}
+    return {"term": t, "found": False}
 
 
 def evaluate(text: str) -> dict:
